@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+.myButton {
+  position: relative;
+  padding: 12px 36px;
+  margin: 10px 0;
+  color: #eed199;
+  font-size: 1.4em;
+  letter-spacing: 2px;
+  font-family: "Roboto";
+  cursor: pointer;
+  display: inline-block;
+  text-transform: uppercase;
+  -webkit-box-reflect: below 10px linear-gradient(transparent, #0005);
+}
+
+.myButton:hover {
+  background-color: #eed199;
+  color: #212121;
+  box-shadow: 0 0 5px #eed199, 0 0 25px #eed199, 0 0 50px #eed199,
+    0 0 200px #eed199;
+}
+
+.input {
+  /* position: relative; */
+  padding: 12px 36px;
+  margin: 10px 0;
+  color: #eed199;
+  font-size: 1.4em;
+  /* letter-spacing: 2px; */
+  /* font-family: "Roboto"; */
+  cursor: pointer;
+  display: inline-block;
+  /* text-transform: uppercase; */
+  -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+}
+
+.input:hover {
+  background-color: #eed199;
+  color: #212121;
+  box-shadow: 0 0 5px #eed199, 0 0 25px #eed199, 0 0 50px #eed199,
+    0 0 200px #eed199;
+}
+
