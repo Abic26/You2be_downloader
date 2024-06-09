@@ -14,13 +14,11 @@ export const MiComponente = () => {
     size: "",
   });
   const [loading, setLoading] = useState(false); // Nuevo estado para controlar la visibilidad del spinner
+  const [firstFetchData, setFirstFetchData] = useState(null);
 
-  const axiosGet = async () => {
-    setLoading(true); // Mostrar el spinner
-
-    const apiUrl =
-      "https://youtube-mp3-downloader2.p.rapidapi.com/ytmp3/ytmp3/";
-    const apiKey = "e6b921f9abmshe364a7324358afdp10ba2cjsnedc70148dcbe";
+  const fetchGetName = async () => {
+    const apiUrl = "https://youtube-video-and-shorts-downloader.p.rapidapi.com/";
+    const apiKey = "d7364684c7msh3006660d75832f8p1e03f1jsn5c8ea470b0c1";
 
     const urlWithParams = new URL(apiUrl);
     urlWithParams.searchParams.append("url", inputValue);
@@ -29,8 +27,8 @@ export const MiComponente = () => {
       const response = await fetch(urlWithParams.toString(), {
         method: "GET",
         headers: {
-          "X-RapidAPI-Key": apiKey,
-          "X-RapidAPI-Host": "youtube-mp3-downloader2.p.rapidapi.com",
+          "x-rapidapi-key": apiKey,
+          "x-rapidapi-host": "youtube-video-and-shorts-downloader.p.rapidapi.com",
         },
       });
 
@@ -39,21 +37,57 @@ export const MiComponente = () => {
       }
 
       const data = await response.json();
-      console.log(data);
-
-      // Actualizar el estado con la información de la respuesta
-      setResponseInfo({
-        title: data.title,
-        link: data.link,
-        size: data.size,
-      });
-
-      // Ocultar el spinner y mostrar el modal
-      setLoading(false);
-      setShowModal(true);
+      console.log("First fetch data: ", data);
+      return data;
     } catch (error) {
       console.error("Error al realizar la solicitud:", error.message);
-      setLoading(false); // Ocultar el spinner en caso de error
+      return null;
+    }
+  };
+
+  const axiosGet = async () => {
+    setLoading(true);
+
+    const firstData = await fetchGetName();
+
+    if (firstData) {
+      const apiUrl = "https://youtube-mp3-downloader2.p.rapidapi.com/ytmp3/ytmp3/";
+      const apiKey = "d7364684c7msh3006660d75832f8p1e03f1jsn5c8ea470b0c1";
+
+      const urlWithParams = new URL(apiUrl);
+      urlWithParams.searchParams.append("url", inputValue);
+
+      try {
+        const response = await fetch(urlWithParams.toString(), {
+          method: "GET",
+          headers: {
+            "X-RapidAPI-Key": apiKey,
+            "X-RapidAPI-Host": "youtube-mp3-downloader2.p.rapidapi.com",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Second fetch data: ", data);
+
+        setResponseInfo({
+          title: firstData.data.video_info.title,
+          link: data.dlink,
+          size: data.size,
+        });
+
+        setLoading(false);
+        setShowModal(true);
+      } catch (error) {
+        console.error("Error al realizar la solicitud:", error.message);
+        setLoading(false);
+      }
+    } else {
+      console.error("No se pudo obtener la información de la primera solicitud");
+      setLoading(false);
     }
   };
 
@@ -87,13 +121,17 @@ export const MiComponente = () => {
 
       {/* Mostrar el spinner si loading es true */}
       {loading && (
-      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
-        <Spinner color="pink" size="xl" />
-      </div>
-    )}
-      
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
+          <Spinner color="pink" size="xl" />
+        </div>
+      )}
+
       {/* Renderizar el componente ModalComp con las propiedades necesarias */}
-      <ModalComp showModal={showModal} responseInfo={responseInfo} onClose={closeModal} />
+      <ModalComp
+        showModal={showModal}
+        responseInfo={responseInfo}
+        onClose={closeModal}
+      />
     </div>
   );
 };

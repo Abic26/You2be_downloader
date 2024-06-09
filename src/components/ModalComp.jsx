@@ -18,13 +18,13 @@ export const ModalComp = ({ showModal, responseInfo, onClose }) => {
       position="center"
     >
       <Modal.Header>{responseInfo.title}</Modal.Header>
-      <Modal.Body>
+      {/* <Modal.Body>
         <div className="space-y-6">
           <p className="flex flex-wrap text-body-5 md:text-body-4 leading-relaxed text-metal-500">
             Size: {responseInfo.size}
           </p>
         </div>
-      </Modal.Body>
+      </Modal.Body> */}
         <div className="flex flex-row gap-4 justify-end">
       <Modal.Footer>
           <Button
@@ -34,7 +34,7 @@ export const ModalComp = ({ showModal, responseInfo, onClose }) => {
           >
             Close
           </Button>
-          <a href={responseInfo.link} rel="noopener noreferrer">
+          <a href={responseInfo.link} download={responseInfo.title} rel="noopener noreferrer">
             <Button
               className="hover:text-red-300 hover:border-red-300 hover:bg-white"
               type="outlineGray"
